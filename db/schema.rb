@@ -17,6 +17,17 @@ ActiveRecord::Schema.define(version: 20130601172247) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
+  create_table "activities", id: false, force: true do |t|
+    t.uuid     "id",                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "return_buffer_hours"
+    t.boolean  "completed"
+  end
+
   create_table "contacts", id: false, force: true do |t|
     t.uuid     "id",           null: false
     t.string   "first_name"
