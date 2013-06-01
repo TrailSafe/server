@@ -1,4 +1,4 @@
 class UserContact < ActiveRecord::Base
-  has_one :user
-  has_one :contact
+  belongs_to :user
+  belongs_to :contact
 end

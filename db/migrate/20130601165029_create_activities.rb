@@ -7,6 +7,9 @@ class CreateActivities < ActiveRecord::Migration
       t.integer :return_buffer_hours
       t.boolean :completed
 
+      t.uuid :user_id
+      t.uuid :device_id
+
       t.timestamps
     end
   end

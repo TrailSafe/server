@@ -17,9 +17,9 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: server_development
+  database: trailsafe_server_development
   pool: 5
-  username: server
+  username: trailsafe
   password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -46,15 +46,15 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: server_test
+  database: trailsafe_server_test
   pool: 5
-  username: server
+  username: trailsafe
   password:
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: server_production
+  database: trailsafe_server_production
   pool: 5
-  username: server
+  username: trailsafe
   password:
