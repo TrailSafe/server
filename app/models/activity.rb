@@ -1,5 +1,7 @@
 class Activity < ActiveRecord::Base
 
+  default_scope ->{ order(:updated_at) }
+
   belongs_to :device
   belongs_to :user
 
