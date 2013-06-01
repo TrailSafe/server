@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TrailSafe App</title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+
+  <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "maps", media: "all" %>
+
+  <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact"></script>
+
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
