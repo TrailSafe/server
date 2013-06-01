@@ -1,5 +1,4 @@
 Server::Application.routes.draw do
-
   constraints subdomain: 'api' do
     scope 'devices/:device_uuid/' do
       resource :user do
@@ -12,7 +11,12 @@ Server::Application.routes.draw do
   end
 
   constraints subdomain: 'www' do
+    root 'pages#home'
 
+    get 'about' => 'pages#about'
+    get 'contact' => 'pages#contact'
+
+    resources :help_requests
   end
 
   # Root not matched domain roots to www
