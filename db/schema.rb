@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130601172247) do
+ActiveRecord::Schema.define(version: 20130601174402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,13 +19,13 @@ ActiveRecord::Schema.define(version: 20130601172247) do
 
   create_table "activities", id: false, force: true do |t|
     t.uuid     "id",                  null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "name"
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "return_buffer_hours"
     t.boolean  "completed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "contacts", id: false, force: true do |t|
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 20130601172247) do
     t.string   "last_name"
     t.string   "phone_number"
     t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "devices", id: false, force: true do |t|
+    t.uuid     "id",         null: false
+    t.uuid     "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
