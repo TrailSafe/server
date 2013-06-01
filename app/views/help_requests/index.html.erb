@@ -1,0 +1,25 @@
+<h1>Listing help_requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @help_requests.each do |help_request| %>
+      <tr>
+        <td><%= link_to 'Show', help_request %></td>
+        <td><%= link_to 'Edit', edit_help_request_path(help_request) %></td>
+        <td><%= link_to 'Destroy', help_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Help request', new_help_request_path %>
