@@ -1,4 +1,10 @@
 Server::Application.routes.draw do
+
+  root 'pages#home'
+
+  get 'about' => 'pages#about'
+  get 'contact' => 'pages#contact'
+
   resources :help_requests
 
   # The priority is based upon order of creation: first created -> highest priority.
