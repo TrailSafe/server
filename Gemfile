@@ -52,4 +52,5 @@ group :development, :test do
   gem "thin"
   gem "terminal-notifier-guard"
   gem 'shoulda-matchers'
+  gem 'simplecov'
 end
