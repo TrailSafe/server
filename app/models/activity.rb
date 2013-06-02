@@ -4,7 +4,6 @@ class Activity < ActiveRecord::Base
     (ENV["BUFFER"] || 60).minutes
   end
 
-
   def self.expired_time
     Time.now + Activity.buffer
   end
@@ -21,9 +20,7 @@ class Activity < ActiveRecord::Base
 
   belongs_to :device
   belongs_to :user
-
   has_one :emergency_contact, class_name: 'Contact', through: :user
-
   has_one :activity_area, as: :locatable, class_name: 'Location'
   has_one :return_area, as: :locatable, class_name: 'Location'
 
