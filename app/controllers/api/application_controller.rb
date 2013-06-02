@@ -3,6 +3,10 @@ class Api::ApplicationController < ::ApplicationController
   respond_to :json
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  def info
+    render json: { info: 'v1 of the TrailSafe API' }
+  end
+
   private
 
   def current_device

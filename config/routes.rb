@@ -1,6 +1,7 @@
 Server::Application.routes.draw do
   constraints subdomain: 'api' do
     scope module: :api do
+      get '/' => 'application#info'
       scope 'devices/:device_uuid/' do
         resource :user do
           resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
