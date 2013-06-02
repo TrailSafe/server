@@ -78,11 +78,41 @@ describe Activity do
   end
 
   describe '#in_return_time_range?' do
-    it "should show when someone is in a possible window of return" do
-      activity.created_at = 5.hours.ago
-      activity.end_time = Activity.buffer.ago + 10
-      activity.send(:in_return_time_range?).should be_true
+    context 'the activity is nearing completion' do
+      it "should return true" do
+        activity.created_at = 5.hours.ago
+        activity.end_time   = Activity.buffer.from_now - 10
+        activity.send(:in_return_time_range?).should be_true
+      end
     end
+
+    context 'the activity is nearing expiration' do
+      it "should return true" do
+        activity.created_at = 5.hours.ago
+        activity.end_time   = Activity.buffer.ago + 10
+        activity.send(:in_return_time_range?).should be_true
+      end
+    end
+
+    context 'the activity has recently started' do
+      it "should return false" do
+        activity.created_at = 1.minute.ago
+        activity.end_time   = 5.hours.from_now
+        activity.send(:in_return_time_range?).should be_false
+      end
+    end
+
+    context 'the activity has expired' do
+      it "should return false" do
+        activity.created_at = 5.hours.ago
+        activity.end_time   = 10.seconds.ago - Activity.buffer
+        activity.send(:in_return_time_range?).should be_false
+      end
+    end
+  end
+
+  describe '#in_progress' do
+
   end
 
 end
