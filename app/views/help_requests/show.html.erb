@@ -1,68 +1,180 @@
 <script>
-    require(["esri/map", "esri/InfoTemplate", "esri/geometry/Point", "esri/graphic", "/js/utils.js", "dojo/on", "dojo/dom", "dojo/domReady!"],
-            function (Map, InfoTemplate, Point, Graphic, utils, on, dom) {
+    define("app", ["esri/map", "esri/layers/graphics", "esri/graphic", "esri/geometry/Point", "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/tasks/ProjectParameters", "/js/utils.js", "dojo/dom", "dojo/domReady!"],
+            function (Map, Graphics, Graphic, Point, FeatureLayer, InfoTemplate, ProjectParameters, utils, dom) {
                 "use strict"
 
+                var featureLayer, oldFeatureLayer;
+                var geometryService;
+
+                var m = {
+                    map: null,
+                    utils: utils,
+                    // Create a feature layer to get feature service
+                    addFeatureService: function () {
+                        m.removeFeatureService();
+                        utils.setStyle("progress", "progress");
+                        var infoTemplate = new InfoTemplate("Fields", "");
+                        //var url = dom.byId("textUrl").value.trim();
+                        var url = "http://services1.arcgis.com/M8KJPUwAXP8jhtnM/arcgis/rest/services/BoulderCntyTrails/FeatureServer/0";
+                        featureLayer = new FeatureLayer(url, {
+                            mode: FeatureLayer.MODE_ONDEMAND,
+                            outFields: ["*"],
+                            opacity: .80,
+                            infoTemplate: infoTemplate
+                        });
+                        m.map.addLayer(featureLayer);
+                    },
+                    // Remove existing service
+                    removeFeatureService: function () {
+                        utils.setStyle("progress", "progress hidden");
+                        if (featureLayer) {
+                            m.map.removeLayer(featureLayer);
+                            m.map.infoWindow.hide();
+                        }
+                    },
+                    // Zoom to layer and update url
+                    layerAdded: function (layer, error) {
+                        if (featureLayer) {
+                            if (typeof error == 'undefined') {
+                                m.zoomToLayer(featureLayer);
+                            } else {
+                                m.utils.setStyle("progress", "progress hidden");
+                                alert("Feature service could not be loaded. Check URL.");
+                            }
+                            dom.byId("textUrl").value = layer.url;
+                        }
+
+                    },
+                    // Zoom to features regardless of the projection
+                    zoomToLayer: function (layer) {
+                        var params = new ProjectParameters();
+                        params.geometries = [layer.fullExtent];
+                        params.outSR = m.map.spatialReference;
+                        geometryService.project(params, function (geometries) {
+                            m.map.setExtent(geometries[0]);
+                        });
+                    },
+
+                    showMyGeolocation: function () {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(m.showMyLocation, m.errorHandler);
+                            utils.setStyle("progress", "progress");
+                        } else {
+                            alert("Sorry, your browser doesn't support geolocation.");
+                        }
+                    },
+
+                    showMyLocation: function (position) {
+                        m.clearGeolocationGraphics();
+                        // Create a point
+                        var pt = new Point(position.coords.longitude, position.coords.latitude);
+                        // Create a symbol and pop-up template and add the graphic to the map
+                        var symbol = utils.createPictureSymbol("/images/blue-pin.png", 0, 0, 24);
+                        var attributes = {"lat": pt.y.toFixed(2), "lon": pt.x.toFixed(2)};
+                        var infoTemplate = new InfoTemplate("My Location", "Latitude: ${lat} <br/>Longitude: ${lon}");
+                        var graphic = new Graphic(pt, symbol, attributes, infoTemplate);
+                        m.map.graphics.add(graphic);
+                        // Position the map
+                        m.map.centerAndZoom(pt, 17);
+                        utils.setStyle("progress", "progress hidden");
+                    },
+
+                    showHikerLocation: function () {
+                        m.clearGeolocationGraphics();
+                        var position = {
+                            coords: {
+                                longitude: -105.3045,
+                                latitude: 40.0124
+                            }
+                        };
+                        // Create a point
+                        var pt = new Point(position.coords.longitude, position.coords.latitude);
+                        // Create a symbol and pop-up template and add the graphic to the map
+                        var symbol = utils.createPictureSymbol("/images/red-pin.png", 0, 0, 24);
+                        var attributes = {"lat": pt.y.toFixed(2), "lon": pt.x.toFixed(2)};
+                        var infoTemplate = new InfoTemplate("My Location", "Latitude: ${lat} <br/>Longitude: ${lon}");
+                        var graphic = new Graphic(pt, symbol, attributes, infoTemplate);
+                        m.map.graphics.add(graphic);
+                        // Position the map
+                        m.map.centerAndZoom(pt, 17);
+                        utils.setStyle("progress", "progress hidden");
+                    },
+
+                    errorHandler: function (err) {
+                        utils.setStyle("progress", "progress hidden");
+                        if (err.code == 1) {
+                            alert("Error: Access is denied!");
+                        } else if (err.code == 2) {
+                            alert("Error: Position is unavailable!");
+                        } else
+                            alert("Error: " + err);
+                    },
+
+                    clearGeolocationGraphics: function () {
+                        m.map.infoWindow.hide();
+                        m.map.graphics.clear();
+                    }
+
+                };
+                return m;
+            }
+    );
+
+    require(["app", "esri/map", "esri/tasks/GeometryService", "dojo/on", "dojo/dom", "dojo/domReady!"],
+            function (app, Map, GeometryService, on, dom) {
+                "use strict"
                 // Create map
                 var map = new Map("mapDiv", {
                     basemap: "satellite",
-                    center: [-100, 53],
+                    center: [-28, 40],
                     zoom: 3
                 });
-                utils.autoRecenter(map);
+
+                app.map = map;
+
+                app.utils.autoRecenter(map);
+
+                // Create geometry service
+                var geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
                 // Wire events
-                on(dom.byId("btnGeolocation"), "click", showGeolocation);
-                on(dom.byId("btnClear"), "click", clearGeolocationGraphics);
+                //ready(app.showMyGeolocation());
 
-                function showGeolocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(showLocation, errorHandler);
-                        utils.setStyle("progress", "progress");
-                    } else {
-                        alert("Sorry, your browser doesn't support geolocation.");
-                    }
-                }
+                on(map, "layer-add-result", app.layerAdded);
+                on(map, "update-start", function () {
+                    app.utils.setStyle("progress", "progress");
+                });
+                on(map, "update-end", function () {
+                    app.utils.setStyle("progress", "progress hidden");
+                });
 
-                function showLocation(position) {
-                    // Create a point
-                    var pt = new Point(position.coords.longitude, position.coords.latitude);
-                    // Create a symbol and pop-up template and add the graphic to the map
-                    var symbol = utils.createPictureSymbol("/images/blue-pin.png", 0, 0, 24);
-                    var attributes = {"lat": pt.y.toFixed(2), "lon": pt.x.toFixed(2)};
-                    var infoTemplate = new InfoTemplate("My Location", "Latitude: ${lat} <br/>Longitude: ${lon}");
-                    var graphic = new Graphic(pt, symbol, attributes, infoTemplate);
-                    map.graphics.add(graphic);
-                    // Position the map
-                    map.centerAndZoom(pt, 13);
-                    utils.setStyle("progress", "progress hidden");
-                }
+                on(dom.byId("btnMyGeolocation"), "click", app.showMyGeolocation);
+                on(dom.byId("btnHikerGeolocation"), "click", app.showHikerLocation);
 
-                function errorHandler(err) {
-                    utils.setStyle("progress", "progress hidden");
-                    if (err.code == 1) {
-                        alert("Error: Access is denied!");
-                    } else if (err.code == 2) {
-                        alert("Error: Position is unavailable!");
-                    } else
-                        alert("Error: " + err);
-                }
+                on(dom.byId("btnShowTrails"), "click", app.addFeatureService);
+                on(dom.byId("btnHideTrails"), "click", app.removeFeatureService);
 
-                function clearGeolocationGraphics() {
-                    map.infoWindow.hide();
-                    map.graphics.clear();
-                }
             }
     );
 </script>
+
 <div class="panel">
-  <div class="titlearea"><span id="titleMessage" class="title-message">Display your Geolocation</span></div>
+  <div class="titlearea"><span class="title-message">Locations</span></div>
   <div class="controls">
     <div class="buttons">
-      <button id="btnGeolocation" class="btn btn-primary">Go</button>
-      <button id="btnClear" class="btn">Clear</button>
+      <button id="btnMyGeolocation" class="btn btn-primary">Show My Location</button>
+      <button id="btnHikerGeolocation" class="btn btn-danger">Show Hiker's Last Location</button>
+      <!-- <button id="btnClearMyLocation" class="btn">Clear</button> -->
     </div>
   </div>
+  <div class="titlearea" style="margin-top: 15px;"><span class="title-message">Hiking Trails</span></div>
+  <div class="controls">
+    <div class="buttons">
+      <button id="btnShowTrails" class="btn btn-primary">Show</button>
+      <button id="btnHideTrails" class="btn">Hide</button>
+    </div>
+  </div>
+  <div class="message"><span id="userMessage" class="user-message"></span></div>
 </div>
 <div id="mapDiv"></div>
 <div id="progress" class="progress hidden"></div>
