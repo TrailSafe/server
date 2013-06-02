@@ -64,7 +64,7 @@ CREATE TABLE activities (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     name character varying(255),
     end_time timestamp without time zone,
-    completed boolean,
+    completed boolean DEFAULT false,
     user_id uuid,
     device_id uuid,
     created_at timestamp without time zone,
@@ -107,6 +107,9 @@ CREATE TABLE help_requests (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     device_id uuid,
     short_url character varying(255),
+    emergency_contact_notified boolean,
+    emergency_services_notified boolean,
+    rescued_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -246,6 +249,90 @@ ALTER TABLE ONLY locations
 
 ALTER TABLE ONLY user_contacts
     ADD CONSTRAINT user_contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_activities_on_completed; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_completed ON activities USING btree (completed);
+
+
+--
+-- Name: index_activities_on_device_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_device_id ON activities USING btree (device_id);
+
+
+--
+-- Name: index_activities_on_end_time; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_end_time ON activities USING btree (end_time);
+
+
+--
+-- Name: index_activities_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_activities_on_user_id ON activities USING btree (user_id);
+
+
+--
+-- Name: index_contacts_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_contacts_on_id_and_type ON contacts USING btree (id, type);
+
+
+--
+-- Name: index_devices_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_devices_on_user_id ON devices USING btree (user_id);
+
+
+--
+-- Name: index_help_requests_on_emergency_contact_notified; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_emergency_contact_notified ON help_requests USING btree (emergency_contact_notified);
+
+
+--
+-- Name: index_help_requests_on_emergency_services_notified; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_emergency_services_notified ON help_requests USING btree (emergency_services_notified);
+
+
+--
+-- Name: index_help_requests_on_rescued_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_rescued_at ON help_requests USING btree (rescued_at);
+
+
+--
+-- Name: index_locations_on_data; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_locations_on_data ON locations USING gin (data);
+
+
+--
+-- Name: index_locations_on_locatable_id_and_locatable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_locations_on_locatable_id_and_locatable_type ON locations USING btree (locatable_id, locatable_type);
+
+
+--
+-- Name: index_user_contacts_on_user_id_and_contact_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_contacts_on_user_id_and_contact_id ON user_contacts USING btree (user_id, contact_id);
 
 
 --

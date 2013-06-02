@@ -5,6 +5,8 @@ class CreateUserContacts < ActiveRecord::Migration
       t.uuid :contact_id
 
       t.timestamps
+
+      t.index [:user_id, :contact_id]
     end
   end
 end

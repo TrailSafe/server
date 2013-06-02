@@ -7,6 +7,8 @@ class CreateContacts < ActiveRecord::Migration
       t.string :type
 
       t.timestamps
+
+      t.index [:id, :type]
     end
   end
 end

@@ -5,6 +5,9 @@ class CreateLocations < ActiveRecord::Migration
       t.string :locatable_type
       t.hstore :data
       t.timestamps
+
+      t.index [:locatable_id, :locatable_type]
+      t.index :data, using: :gin
     end
   end
 end

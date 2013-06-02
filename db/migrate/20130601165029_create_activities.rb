@@ -10,6 +10,12 @@ class CreateActivities < ActiveRecord::Migration
       t.uuid :device_id
 
       t.timestamps
+
+      t.index :user_id
+      t.index :device_id
+      t.index :completed
+      t.index :end_time
+
     end
   end
 end
