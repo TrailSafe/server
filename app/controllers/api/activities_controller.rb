@@ -2,11 +2,6 @@ class Api::ActivitiesController < Api::ApplicationController
 
   before_filter :find_activity, only: [:show, :update, :destroy]
 
-  def current
-    @activity = current_device.activities.where(completed: [false, nil]).last
-    render :show
-  end
-
   def index
     @activities = current_user.activities
   end
@@ -31,7 +26,11 @@ class Api::ActivitiesController < Api::ApplicationController
   end
 
   def destroy
-    head :ok if @activity.destroy
+    if @activity.destroy
+      head :ok
+    else
+      head 400
+    end
   end
 
   private
