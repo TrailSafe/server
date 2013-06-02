@@ -14,7 +14,7 @@ describe Activity do
     it 'should set the duration in minutes from the current time' do
       expect { activity.duration = 30 }.to change {
         activity.end_time.to_i
-      }.to (Time.now + 30.minutes).to_i
+      }.to be_within(1).of (Time.now + 30.minutes).to_i
     end
   end
 
@@ -77,9 +77,11 @@ describe Activity do
     end
   end
 
-  describe '#device_has_returned' do
-    it "should call contains_device? on the return_area with the device" do
-      
+  describe '#in_return_time_range?' do
+    it "should show when someone is in a possible window of return" do
+      activity.created_at = 5.hours.ago
+      activity.end_time = Activity.buffer.ago + 10
+      activity.send(:in_return_time_range?).should be_true
     end
   end
 
