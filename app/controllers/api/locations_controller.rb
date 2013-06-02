@@ -1,6 +1,6 @@
 class Api::LocationsController < Api::ApplicationController
   def create
-    if current_device.locations.create location_params
+    if current_device.locations.create data: location_params
       head :created
     else
       head :unprocessable_entity
@@ -10,6 +10,6 @@ class Api::LocationsController < Api::ApplicationController
   private
 
   def location_params
-    params.require(:location).permit(:data)
+    params.require(:location).require(:data).permit!
   end
 end
