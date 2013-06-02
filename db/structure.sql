@@ -107,8 +107,9 @@ CREATE TABLE help_requests (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     device_id uuid,
     short_url character varying(255),
-    emergency_contact_notified boolean,
-    emergency_services_notified boolean,
+    user_alerted_at timestamp without time zone,
+    emergency_contact_alerted_at timestamp without time zone,
+    services_alerted_at timestamp without time zone,
     rescued_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -294,17 +295,10 @@ CREATE INDEX index_devices_on_user_id ON devices USING btree (user_id);
 
 
 --
--- Name: index_help_requests_on_emergency_contact_notified; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_help_requests_on_emergency_contact_alerted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_help_requests_on_emergency_contact_notified ON help_requests USING btree (emergency_contact_notified);
-
-
---
--- Name: index_help_requests_on_emergency_services_notified; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_help_requests_on_emergency_services_notified ON help_requests USING btree (emergency_services_notified);
+CREATE INDEX index_help_requests_on_emergency_contact_alerted_at ON help_requests USING btree (emergency_contact_alerted_at);
 
 
 --
@@ -315,10 +309,24 @@ CREATE INDEX index_help_requests_on_rescued_at ON help_requests USING btree (res
 
 
 --
+-- Name: index_help_requests_on_services_alerted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_services_alerted_at ON help_requests USING btree (services_alerted_at);
+
+
+--
 -- Name: index_help_requests_on_short_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_help_requests_on_short_url ON help_requests USING btree (short_url);
+
+
+--
+-- Name: index_help_requests_on_user_alerted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_user_alerted_at ON help_requests USING btree (user_alerted_at);
 
 
 --
