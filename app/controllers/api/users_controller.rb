@@ -2,7 +2,7 @@ class Api::UsersController < Api::ApplicationController
 
   def create
     @user = current_device.create_user(user_params)
-    render :show, status: :create
+    render :show, status: :created
   end
 
   def show
@@ -17,6 +17,6 @@ class Api::UsersController < Api::ApplicationController
   private
 
   def user_params
-    params[:user].permit(:first_name, :last_name, :phone_number)
+    params.require(:user).permit(:first_name, :last_name, :phone_number)
   end
 end

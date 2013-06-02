@@ -20,7 +20,7 @@ class Api::ApplicationController < ::ApplicationController
   end
 
   def record_not_found(error)
-    render json: { error: error.message }, status: 404
+    render json: { error: error.message }, status: :not_found
   end
 
   def verify_api_key!

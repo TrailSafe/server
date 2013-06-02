@@ -35,7 +35,7 @@ class Api::ContactsController < Api::ApplicationController
   end
 
   def activity_params
-    params[:contact].permit(:first_name, :last_name, :phone_number)
+    paramsrequire(:contact).permit(:first_name, :last_name, :phone_number)
   end
 
 end
