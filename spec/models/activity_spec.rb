@@ -111,8 +111,20 @@ describe Activity do
     end
   end
 
-  describe '#in_progress' do
+  describe '#in_progress?' do
+    context 'if the event has started' do
+      it 'should return true' do
+        activity.send(:in_progress?).should be_true
+      end
+    end
 
+    context 'if the event has expired' do
+      it 'should return true' do
+        activity.created_at = 5.hours.ago
+        activity.end_time   = Activity.buffer.ago
+        activity.send(:in_progress?).should be_false
+      end
+    end
   end
 
 end
