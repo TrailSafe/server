@@ -4,7 +4,7 @@ class CreateActivities < ActiveRecord::Migration
       t.string :name
 
       t.datetime :end_time
-      t.boolean :completed
+      t.boolean :completed, default: false
 
       t.uuid :user_id
       t.uuid :device_id
