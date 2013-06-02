@@ -1,6 +1,7 @@
 class UserAlerter < BaseAlerter
 
   def invoke!
+    return false unless current_activity
     send_text_message(user.phone_number)
   end
 

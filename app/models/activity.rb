@@ -26,6 +26,9 @@ class Activity < ActiveRecord::Base
 
   after_create :set_user_from_device
 
+  validates_presence_of :name
+  validates_presence_of :device
+
   def duration=(minutes)
     self.end_time = Time.now + minutes.minutes
   end

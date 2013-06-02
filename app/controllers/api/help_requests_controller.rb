@@ -3,7 +3,7 @@ class Api::HelpRequestsController < Api::ApplicationController
   before_filter :find_help_request, only: [:destroy, :show]
 
   def create
-    if (@help_request = current_device.help_requests.create)
+    if (@help_request = current_device.create_help_request user_initiated: true)
       render :show, status: :created
     else
       head 422

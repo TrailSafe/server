@@ -1,13 +1,11 @@
 class Device < ActiveRecord::Base
 
   default_scope ->{ order(:updated_at) }
+  delegate :emergency_contact, to: :user
 
   belongs_to :user
-  has_one :emergency_contact, through: :user
-  has_one :help_request, dependent: :restrict_with_exception
+  has_one :help_request, dependent: :destroy
   has_many :activities
-  has_many :locations, as: :locatable
-  has_many :help_requests
 
   def current_activity
     incomplete_activities.last

@@ -18,14 +18,15 @@ class BaseAlerter
 
   def send_text_message(phone_number, message = self.message)
     twilio_client.account.sms.messages.create(
-      to: phone_number,
+      to:   phone_number,
       body: message,
       from: twilio_phone_number
     )
   end
 
   def help_url
-    Rails.application.routes.url_helpers.help_request_url(@help_request)
+    'http://trl.io/' + SecureRandom.hex(5)
+    # Rails.application.routes.url_helpers.help_request_url(@help_request.short_url)
   end
 
   def twilio_client

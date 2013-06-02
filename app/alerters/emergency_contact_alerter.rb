@@ -6,7 +6,7 @@ class EmergencyContactAlerter < BaseAlerter
 
   def message
     <<-SMS
-#{emergency_contact.first_name}, #{user.full_name} is in trouble, her last known location was #{hook_url} please
+#{emergency_contact.first_name}, #{user.full_name} is in trouble, her last known location was #{help_url()} please
 seek help immediately!
     SMS
   end

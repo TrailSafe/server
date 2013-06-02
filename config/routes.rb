@@ -8,7 +8,7 @@ Server::Application.routes.draw do
           resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
           resources :activities, only: [:create, :show, :update, :destroy, :index]
         end
-        resources :help_requests, only: [:create, :show]
+        resource :help_request, only: [:create, :destroy, :show]
         resources :locations, only: [:create]
       end
     end

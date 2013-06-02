@@ -111,6 +111,8 @@ CREATE TABLE help_requests (
     emergency_contact_alerted_at timestamp without time zone,
     services_alerted_at timestamp without time zone,
     rescued_at timestamp without time zone,
+    user_initiated boolean DEFAULT false,
+    alerts hstore,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -297,6 +299,13 @@ CREATE INDEX index_devices_on_user_id ON devices USING btree (user_id);
 
 
 --
+-- Name: index_help_requests_on_alerts; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_alerts ON help_requests USING gin (alerts);
+
+
+--
 -- Name: index_help_requests_on_emergency_contact_alerted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -329,6 +338,13 @@ CREATE INDEX index_help_requests_on_short_url ON help_requests USING btree (shor
 --
 
 CREATE INDEX index_help_requests_on_user_alerted_at ON help_requests USING btree (user_alerted_at);
+
+
+--
+-- Name: index_help_requests_on_user_initiated; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_user_initiated ON help_requests USING btree (user_initiated);
 
 
 --
