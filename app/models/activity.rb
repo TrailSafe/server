@@ -26,20 +26,13 @@ class Activity < ActiveRecord::Base
 
   after_create :set_user_from_device
 
-  def buffer
-    self.class.buffer
-  end
-
   def duration=(minutes)
     self.end_time = Time.now + minutes.minutes
   end
 
   def status
     case
-    when completed?
-      :completed
-    when in_return_time_range? && device_has_returned?
-      update_attributes completed: true
+    when completed? || (in_return_time_range? && device_has_returned?)
       :completed
     when in_progress?
       :in_progress
@@ -71,9 +64,9 @@ class Activity < ActiveRecord::Base
   end
 
   def return_time_range
-    start_time = end_time - buffer
-    end_time   = end_time + buffer
-    start_time..end_time
+    start_of_buffer = end_time - Activity.buffer
+    end_of_buffer = end_time + Activity.buffer
+    start_of_buffer..end_of_buffer
   end
 
   def time_has_elapsed?

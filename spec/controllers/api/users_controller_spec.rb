@@ -4,7 +4,7 @@ describe Api::UsersController do
 
   describe "GET 'create'" do
     it "returns http success" do
-      get 'create'
+      get 'create', first_name: ''
       response.should be_success
     end
   end
