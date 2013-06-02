@@ -1,11 +1,23 @@
 class Activity < ActiveRecord::Base
 
+  def self.buffer
+    (ENV["BUFFER"] || 60).minutes
+  end
+
+
+  def self.expired_time
+    Time.now + Activity.buffer
+  end
+
   attr_reader :status
 
   delegate :data, :data=, to: :activity_area, prefix: true, allow_nil: true
   delegate :data, :data=, to: :return_area, prefix: true, allow_nil: true
 
   default_scope -> { order(:updated_at) }
+
+  scope :incomplete, ->{ where(completed: [nil, false]) }
+  scope :expired, ->{ where('end_time > :expired_time', expired_time: expired_time) }
 
   belongs_to :device
   belongs_to :user
@@ -16,6 +28,10 @@ class Activity < ActiveRecord::Base
   has_one :return_area, as: :locatable, class_name: 'Location'
 
   after_create :set_user_from_device
+
+  def buffer
+    self.class.buffer
+  end
 
   def duration=(minutes)
     self.end_time = Time.now + minutes.minutes
@@ -65,10 +81,6 @@ class Activity < ActiveRecord::Base
 
   def time_has_elapsed?
     !in_progress?
-  end
-
-  def buffer
-    (ENV["BUFFER"] || 60).minutes
   end
 
 end
