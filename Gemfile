@@ -43,7 +43,8 @@ gem "pry-rails"
 gem "twilio-ruby"
 
 group :development, :test do
-  gem 'Faker'
+  gem 'faker'
+  gem 'coveralls'
   gem 'debugger'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
