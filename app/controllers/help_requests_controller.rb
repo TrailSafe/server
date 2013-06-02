@@ -10,6 +10,9 @@ class HelpRequestsController < ApplicationController
   # GET /help_requests/1
   # GET /help_requests/1.json
   def show
+    respond_to do |format|
+      format.html { render action: 'show', layout: 'maps'}
+    end
   end
 
   # GET /help_requests/new
