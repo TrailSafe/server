@@ -3,7 +3,7 @@ Server::Application.routes.draw do
     scope module: :api do
       get '/' => 'application#info'
       scope 'devices/:device_uuid/' do
-        get 'current_activity' => 'activities#current'
+        resource :current_activity, only: [:show, :destroy]
         resource :user do
           resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
           resources :activities, only: [:create, :show, :update, :destroy, :index]
