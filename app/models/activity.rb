@@ -54,7 +54,7 @@ class Activity < ActiveRecord::Base
   end
 
   def set_user_from_device
-    self.user = device.user
+    self.update_attributes user: device.user
   end
 
   def return_time_range
