@@ -23,6 +23,20 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+
+
+--
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -49,9 +63,7 @@ SET default_with_oids = false;
 CREATE TABLE activities (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     name character varying(255),
-    start_time timestamp without time zone,
     end_time timestamp without time zone,
-    return_buffer_hours integer,
     completed boolean,
     user_id uuid,
     device_id uuid,
@@ -108,6 +120,7 @@ CREATE TABLE locations (
     id integer NOT NULL,
     locatable_id uuid,
     locatable_type character varying(255),
+    data hstore,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -247,6 +260,8 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 --
 
 SET search_path TO "$user",public;
+
+INSERT INTO schema_migrations (version) VALUES ('20130510030000');
 
 INSERT INTO schema_migrations (version) VALUES ('20130510030001');
 
