@@ -6,6 +6,7 @@ class Device < ActiveRecord::Base
   belongs_to :user
   has_one :help_request, dependent: :destroy
   has_many :activities
+  has_many :locations, as: :locatable
 
   def current_activity
     incomplete_activities.last
