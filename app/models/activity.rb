@@ -17,8 +17,8 @@ class Activity < ActiveRecord::Base
 
   after_create :set_user_from_device
 
-  def duration=(hours)
-    self.end_time = Time.now + hours.hours
+  def duration=(minutes)
+    self.end_time = Time.now + minutes.minutes
   end
 
   def status
@@ -58,13 +58,17 @@ class Activity < ActiveRecord::Base
   end
 
   def return_time_range
-    start_time = end_time - 1.hour
-    end_time   = end_time + 1.hour
+    start_time = end_time - buffer
+    end_time   = end_time + buffer
     start_time..end_time
   end
 
   def time_has_elapsed?
     !in_progress?
+  end
+
+  def buffer
+    (ENV["BUFFER"] || 60).minutes
   end
 
 end
