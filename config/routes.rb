@@ -1,9 +1,11 @@
 Server::Application.routes.draw do
   constraints subdomain: 'api' do
-    scope 'devices/:device_uuid/' do
-      resource :user do
-        resources :contacts, only: [:create, :show, :update, :destroy, :index]
-        resources :activities, only: [:create, :show, :update, :destroy, :index]
+    scope module: :api do
+      scope 'devices/:device_uuid/' do
+        resource :user do
+          resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
+          resources :activities, only: [:create, :show, :update, :destroy, :index]
+        end
         resources :help_requests, only: [:create, :show]
         resources :locations, only: [:create]
       end
@@ -11,7 +13,7 @@ Server::Application.routes.draw do
   end
 
   constraints subdomain: 'www' do
-    root 'pages#home'
+    root to: 'pages#home'
 
     get 'about' => 'pages#about'
     get 'contact' => 'pages#contact'
@@ -20,6 +22,6 @@ Server::Application.routes.draw do
   end
 
   # Root not matched domain roots to www
-  root to: 'application#direct_to_www'
+  get '/' => 'application#redirect_to_www'
 
 end
