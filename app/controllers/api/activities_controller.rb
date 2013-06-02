@@ -36,7 +36,7 @@ class Api::ActivitiesController < Api::ApplicationController
   end
 
   def activity_params
-    params.permit(:name, :start_area_data, :return_area_data, :duration)
+    params[:activity].permit(:name, :activity_area_data, :return_area_data, :duration)
   end
 
 end
