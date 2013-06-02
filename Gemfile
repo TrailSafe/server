@@ -32,10 +32,11 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-# Use unicorn as the app server
-gem 'unicorn'
+# Use thin as the app server
+gem 'thin'
 
 gem "oj"
+gem "rabl"
 
 group :development, :test do
   gem 'debugger'
