@@ -1,0 +1,2 @@
+collection @activities
+attributes :id, :name, :time_remaining, :location_area_data, :completed, :end_time
