@@ -10,4 +10,9 @@ namespace :notify do
     exit(0)
   end
 
+  task :users do
+    puts "did something!"
+    exit(0)
+  end
+
 end
