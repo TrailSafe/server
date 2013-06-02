@@ -24,7 +24,9 @@ class Api::HelpRequestsController < Api::ApplicationController
   private
 
   def find_help_request
-    @help_request = current_device.help_requests.find params.delete(:id)
+    unless (@help_request = current_device.help_request)
+      render json: { error: 'Help request not found' }, status: :not_found
+    end
   end
 
 end
