@@ -4,6 +4,6 @@ class User < Contact
 
   has_one :device
   has_one :user_contact
-  has_one :emergency_contact, class_name: 'Contact', through: :user_contact, source: :contact
+  has_one :emergency_contact, class_name: 'Contact', through: :user_contact, source: :contact, autosave: true
   has_many :activities
 end

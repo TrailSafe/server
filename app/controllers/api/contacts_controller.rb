@@ -4,7 +4,8 @@ class Api::ContactsController < Api::ApplicationController
   rescue_from MissingContact, with: :record_not_found
 
   def create
-    if (@contact = current_user.create_emergency_contact(activity_params))
+    @contact = Contact.new(contact_params)
+    if @contact.update_attributes(emergency_contact_for: current_user)
       render :show, status: :created
     else
       head :unprocessable_entity
@@ -34,8 +35,8 @@ class Api::ContactsController < Api::ApplicationController
     end
   end
 
-  def activity_params
-    paramsrequire(:contact).permit(:first_name, :last_name, :phone_number)
+  def contact_params
+    params.require(:contact).permit(:first_name, :last_name, :phone_number)
   end
 
 end
