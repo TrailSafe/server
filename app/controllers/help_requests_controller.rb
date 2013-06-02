@@ -1,6 +1,8 @@
 class HelpRequestsController < ApplicationController
   before_action :set_help_request, only: [:show]
 
+  before_filter lambda { @body_class = 'help_requests' }
+
   # GET /help_requests/1
   # GET /help_requests/1.json
   def show
@@ -12,7 +14,7 @@ class HelpRequestsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_help_request
-      @help_request = HelpRequest.find(params[:id])
+      # @help_request = HelpRequest.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

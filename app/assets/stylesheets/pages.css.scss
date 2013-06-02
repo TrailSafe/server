@@ -1,3 +1,28 @@
 // Place all the styles related to the Pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "bootstrap";
+
+body {
+
+  background-color: #F06600;
+
+  .container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    .content {
+      @include border-radius(15px);
+      background-color: #fff3ca;
+      padding: 10px 20px;
+      min-height: 400px;
+    }
+  }
+
+  &.home {
+    img.logo-big {
+      margin-top: 50px;
+    }
+  }
+
+}

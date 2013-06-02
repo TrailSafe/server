@@ -9,6 +9,11 @@ Server::Application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # Precompile additional assets.
+  # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false

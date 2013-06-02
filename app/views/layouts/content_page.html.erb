@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TrailSafe App</title>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= "#{controller.controller_name} #{@body_class}".strip %>">
+
+<div class="container">
+  <div class="row-fluid">
+    <div class="span2 left-nav">
+      <img src="/images/logo_transparent.png" width="150" alt="Trail Safe" title="Trail Safe" class="logo">
+    </div>
+    <div class="span10 content">
+      <%= yield %>
+    </div>
+  </div>
+  <div class="row footer">
+
+  </div>
+</div>
+
+</body>
+</html>
