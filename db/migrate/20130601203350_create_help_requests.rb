@@ -12,6 +12,7 @@ class CreateHelpRequests < ActiveRecord::Migration
       t.index :emergency_contact_notified
       t.index :emergency_services_notified
       t.index :rescued_at
+      t.index :short_url
     end
   end
 end

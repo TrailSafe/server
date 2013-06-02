@@ -315,6 +315,13 @@ CREATE INDEX index_help_requests_on_rescued_at ON help_requests USING btree (res
 
 
 --
+-- Name: index_help_requests_on_short_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_help_requests_on_short_url ON help_requests USING btree (short_url);
+
+
+--
 -- Name: index_locations_on_data; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
