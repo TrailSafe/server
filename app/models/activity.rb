@@ -2,7 +2,8 @@ class Activity < ActiveRecord::Base
 
   attr_reader :status
 
-  delegate :data, :data=, to: :location_area, prefix: true, allow_nil: true
+  delegate :data, :data=, to: :activity_area, prefix: true, allow_nil: true
+  delegate :data, :data=, to: :return_area, prefix: true, allow_nil: true
 
   default_scope -> { order(:updated_at) }
 
