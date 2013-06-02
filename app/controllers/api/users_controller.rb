@@ -2,6 +2,7 @@ class Api::UsersController < Api::ApplicationController
 
   def create
     @user = current_device.create_user(user_params)
+    current_device.save
     render :show, status: :created
   end
 
