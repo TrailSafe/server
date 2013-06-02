@@ -3,11 +3,11 @@ class Api::ActivitiesController < Api::ApplicationController
   before_filter :find_activity, only: [:show, :update, :destroy]
 
   def index
-    @activities = current_device.activities
+    @activities = current_user.activities
   end
 
   def create
-    if (@activity = current_device.contacts.create(activity_params))
+    if (@activity = current_device.activities.create(activity_params))
       render :show, status: :created
     else
       head :unprocessable_entity

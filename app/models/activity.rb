@@ -36,7 +36,7 @@ class Activity < ActiveRecord::Base
   end
 
   def time_remaining
-    self.end_time - Time.now
+    (self.end_time - Time.now).to_i
   end
 
   private
