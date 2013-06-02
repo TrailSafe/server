@@ -10,6 +10,6 @@ class Api::LocationsController < Api::ApplicationController
   private
 
   def location_params
-    params.require(:location).require(:data).permit!
+    params.require(:location).permit(:lat, :lng, :radius).permit!
   end
 end

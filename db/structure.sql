@@ -124,7 +124,9 @@ CREATE TABLE locations (
     id integer NOT NULL,
     locatable_id uuid,
     locatable_type character varying(255),
-    data hstore,
+    lat double precision,
+    lng double precision,
+    radius double precision,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -330,10 +332,17 @@ CREATE INDEX index_help_requests_on_user_alerted_at ON help_requests USING btree
 
 
 --
--- Name: index_locations_on_data; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_locations_on_lat; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_locations_on_data ON locations USING gin (data);
+CREATE INDEX index_locations_on_lat ON locations USING btree (lat);
+
+
+--
+-- Name: index_locations_on_lng; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_locations_on_lng ON locations USING btree (lng);
 
 
 --
@@ -341,6 +350,13 @@ CREATE INDEX index_locations_on_data ON locations USING gin (data);
 --
 
 CREATE INDEX index_locations_on_locatable_id_and_locatable_type ON locations USING btree (locatable_id, locatable_type);
+
+
+--
+-- Name: index_locations_on_radius; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_locations_on_radius ON locations USING btree (radius);
 
 
 --
