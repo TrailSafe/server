@@ -1,4 +1,4 @@
-class Api::HelpRequestsController < ApplicationController
+class Api::HelpRequestsController < Api::ApplicationController
   def create
     if (@help_request = current_device.help_requests.create)
       render :show, status: :created

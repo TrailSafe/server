@@ -1,15 +1,15 @@
-class Api::UsersController < ApplicationController
+class Api::UsersController < Api::ApplicationController
 
   def create
     @user = current_device.create_user(user_params)
   end
 
   def show
-    @user = current_device.user
+    @user = current_user
   end
 
   def update
-    @user = current_device.user
+    @user = current_user
     @user.update_attributes user_params
   end
 

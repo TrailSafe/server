@@ -1,12 +1,10 @@
-class Api::ContactsController < ApplicationController
-  before_filter :find_contact, on: [:show, :update, :destroy]
-
-  def index
-    @contacts = current_device.contacts
-  end
+class Api::ContactsController < Api::ApplicationController
+  before_filter :find_contact, only: [:show, :update, :destroy]
+  class MissingContact < StandardError ; end
+  rescue_from MissingContact, with: :record_not_found
 
   def create
-    if (@contact = current_device.contacts.create(activity_params))
+    if (@contact = current_user.create_emergency_contact(activity_params))
       render :show, status: :created
     else
       head :unprocessable_entity
@@ -31,7 +29,9 @@ class Api::ContactsController < ApplicationController
   private
 
   def find_contact
-    @contact = current_device.contacts.find params.delete :id
+    unless (@contact = current_user.emergency_contact)
+      raise MissingContact, 'User does not have an emergency contact.'
+    end
   end
 
   def activity_params

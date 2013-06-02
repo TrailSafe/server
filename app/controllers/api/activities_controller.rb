@@ -1,6 +1,6 @@
-class Api::ActivitiesController < ApplicationController
+class Api::ActivitiesController < Api::ApplicationController
 
-  before_filter :find_activity, on: [:show, :update, :destroy]
+  before_filter :find_activity, only: [:show, :update, :destroy]
 
   def index
     @activities = current_device.activities
