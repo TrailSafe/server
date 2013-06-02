@@ -12,11 +12,11 @@ class Api::ApplicationController < ::ApplicationController
   private
 
   def current_device
-    Device.find_or_create_by(id: params[:device_uuid])
+    @current_device ||= Device.find_or_create_by(id: params[:device_uuid])
   end
 
   def current_user
-    User.find(current_device.user_id)
+    @current_user ||= User.find(current_device.user_id)
   end
 
   def record_not_found(error)
