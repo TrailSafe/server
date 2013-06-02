@@ -1,5 +1,7 @@
 class Api::ApplicationController < ::ApplicationController
 
+  before_filter :verify_api_key!
+
   respond_to :json
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -19,6 +21,16 @@ class Api::ApplicationController < ::ApplicationController
 
   def record_not_found(error)
     render json: { error: error.message }, status: 404
+  end
+
+  def verify_api_key!
+    unless ENV['API_KEY'].present? && authorization_header == ENV['API_KEY']
+      render json: { error: 'Invalid API key' }, status: 401
+    end
+  end
+
+  def authorization_header
+    request.headers['HTTP_AUTHORIZATION']
   end
 
 end

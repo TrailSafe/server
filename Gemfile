@@ -45,6 +45,7 @@ gem "rabl"
 
 group :development, :test do
   gem 'debugger'
+  gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem "rspec-rails", "~> 2.0"
   gem "guard", "~> 1.8.0"
