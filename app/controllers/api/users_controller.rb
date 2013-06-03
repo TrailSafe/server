@@ -1,9 +1,13 @@
 class Api::UsersController < Api::ApplicationController
 
   def create
-    @user = current_device.create_user(user_params)
-    current_device.save
-    render :show, status: :created
+    @user = User.new user_params
+    @user.device = current_device
+    if @user.save
+      render :show, status: :created
+    else
+      head :unprocessable_entity
+    end
   end
 
   def show
