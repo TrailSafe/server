@@ -1,29 +1,9 @@
+require_relative 'routes/api'
+require_relative 'routes/short'
+
+# Default Routes File
 Server::Application.routes.draw do
-  constraints subdomain: 'api' do
-    scope module: :api do
-      get '/' => 'application#info'
-      scope 'devices/:device_uuid/' do
-        resource :current_activity, only: [:show, :destroy]
-        resource :user do
-          resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
-          resources :activities, only: [:create, :show, :update, :destroy, :index]
-        end
-        resource :help_request, only: [:create, :destroy, :show]
-        resources :locations, only: [:create]
-      end
-    end
-  end
-
-  constraints subdomain: 'www' do
-    root to: 'pages#home'
-
-    get 'about' => 'pages#about'
-    get 'contact' => 'pages#contact'
-
-    resources :help_requests
-  end
-
-  # Root not matched domain roots to www
-  get '/' => 'application#redirect_to_www'
-
+  root to: 'pages#home'
+  get ':page' => 'pages#show'
+  resources :help_requests
 end
