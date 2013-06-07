@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :location do
-    data {{ lat: Faker::Address.latitude, lng: Faker::Address.longitude }}
+    lat { Faker::Address.latitude }
+    lng { Faker::Address.longitude }
   end
 end
