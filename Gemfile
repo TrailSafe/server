@@ -41,6 +41,8 @@ gem "oj"
 gem "rabl"
 gem "pry-rails"
 gem "twilio-ruby"
+gem 'phony'
+gem 'activerecord-postgis-adapter'
 
 group :development, :test do
   gem 'faker'
