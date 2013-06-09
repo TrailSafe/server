@@ -42,7 +42,7 @@ gem "rabl"
 gem "pry-rails"
 gem "twilio-ruby"
 gem 'phony'
-gem 'activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', github: 'dazuma/activerecord-postgis-adapter'
 
 group :development, :test do
   gem 'faker'

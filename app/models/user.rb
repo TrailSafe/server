@@ -1,9 +1,8 @@
 class User < Contact
 
-  default_scope ->{ order(:updated_at) }
-
-  has_one :device
-  has_one :user_contact
-  has_one :emergency_contact, class_name: 'Contact', through: :user_contact, source: :contact, autosave: true
+  has_many :devices
   has_many :activities
+  has_many :user_contacts
+  has_many :emergency_contacts, class_name: 'Contact', through: :user_contacts, source: :contact
+
 end

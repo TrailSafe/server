@@ -1,16 +1,25 @@
 class HelpRequest < ActiveRecord::Base
-  delegate :emergency_contact, :current_activity, to: :device
 
-  scope :not_user_initiated, ->{ where(user_initiated: [nil, false]) }
-  scope :by_alerted, ->(name){ where() }
+  # Scopes
+  scope :with_devices, -> { includes(:device) }
+  scope :with_alerts, -> { includes(:alerts) }
+  scope :invoked_by, ->(type) { where(invoked_by_type: type) }
 
+  # Associations
   belongs_to :device
+  belongs_to :invoked_by, polymorphic: true
   has_one :user, through: :device
+  has_many :alerts
 
-  before_create :generate_short_url!
-  after_create :alert_all!, if: :user_initiated
+  # Callbacks
+  before_create :generate_key!
+  after_create :alert_all!, if: ->{ invoked_by.instance_of? User }
 
-  validates_presence_of :device
+  # Validations
+  validates_presence_of :device, :invoked_by
+
+  # Attributes
+  delegate :emergency_contacts, :current_activity, to: :device
 
   def been_rescued!
     update_attributes rescued_at: Time.now
@@ -34,9 +43,9 @@ class HelpRequest < ActiveRecord::Base
     [alertable.to_s, 'alerter'].join('_').classify.constantize
   end
 
-  def generate_short_url!
-    generated      = SecureRandom.hex 5
-    self.short_url = self.class.where(short_url: generated).exists? ? generate_short_url! : generated
+  def generate_key!
+    generated = SecureRandom.hex 5
+    self.key  = self.class.where(short_url: generated).exists? ? generate_short_url! : generated
   end
 
 end

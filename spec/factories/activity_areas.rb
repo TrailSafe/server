@@ -1,8 +1,8 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :location do
-    lat { Faker::Address.latitude }
-    lng { Faker::Address.longitude }
+  factory :activity_area, :class => 'Activity::Area' do
+    activity nil
+    poly ""
   end
 end

@@ -1,19 +1,17 @@
 class CreateActivities < ActiveRecord::Migration
   def change
-    create_table :activities, id: :uuid do |t|
+    create_table :activities do |t|
       t.string :name
-
-      t.datetime :end_time
       t.boolean :completed, default: false
+      t.datetime :start_time
+      t.datetime :end_time
+      t.integer :alert_buffer
 
-      t.uuid :user_id
-      t.uuid :device_id
+      t.references :device, index: true
+      t.references :user, index: true
 
-      t.timestamps
-
-      t.index :user_id
-      t.index :device_id
       t.index :completed
+      t.index :start_time
       t.index :end_time
 
     end
