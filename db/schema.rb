@@ -35,10 +35,11 @@ ActiveRecord::Schema.define(version: 20130609194556) do
 
   create_table "activity_areas", force: true do |t|
     t.integer "activity_id"
-    t.spatial "poly",        limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
+    t.spatial "polygon",     limit: {:srid=>4326, :type=>"polygon", :geographic=>true}
   end
 
   add_index "activity_areas", ["activity_id"], :name => "index_activity_areas_on_activity_id"
+  add_index "activity_areas", ["polygon"], :name => "index_activity_areas_on_polygon", :spatial => true
 
   create_table "alerts", force: true do |t|
     t.integer  "help_request_id"
@@ -60,11 +61,12 @@ ActiveRecord::Schema.define(version: 20130609194556) do
 
   create_table "device_locations", force: true do |t|
     t.integer  "device_id"
-    t.spatial  "latlon",      limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.spatial  "lonlat",      limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.datetime "reported_at"
   end
 
   add_index "device_locations", ["device_id"], :name => "index_device_locations_on_device_id"
+  add_index "device_locations", ["lonlat"], :name => "index_device_locations_on_lonlat", :spatial => true
 
   create_table "devices", force: true do |t|
     t.string   "uuid"
