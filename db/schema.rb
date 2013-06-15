@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614040941) do
+ActiveRecord::Schema.define(:version => 20130615232413) do
 
   create_table "contacts", :force => true do |t|
     t.string   "type"
@@ -52,5 +52,14 @@ ActiveRecord::Schema.define(:version => 20130614040941) do
 
   add_index "user_emergency_contacts", ["contact_id"], :name => "index_user_emergency_contacts_on_contact_id"
   add_index "user_emergency_contacts", ["user_id"], :name => "index_user_emergency_contacts_on_user_id"
+
+  create_table "user_passwords", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "digest"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_passwords", ["user_id"], :name => "index_user_passwords_on_user_id"
 
 end

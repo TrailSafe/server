@@ -44,6 +44,7 @@ gem 'twilio-ruby'
 gem 'phony'
 gem 'activerecord-postgis-adapter'
 gem 'strong_parameters'
+gem 'bcrypt-ruby'
 
 group :development, :test do
   gem 'faker'
