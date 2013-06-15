@@ -37,12 +37,13 @@ end
 # Use thin as the app server
 gem 'thin'
 
-gem "oj"
-gem "rabl"
-gem "pry-rails"
-gem "twilio-ruby"
+gem 'oj'
+gem 'rabl'
+gem 'pry-rails'
+gem 'twilio-ruby'
 gem 'phony'
 gem 'activerecord-postgis-adapter'
+gem 'strong_parameters'
 
 group :development, :test do
   gem 'faker'
@@ -50,17 +51,17 @@ group :development, :test do
   gem 'debugger'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem "rspec-rails", "~> 2.0"
-  gem "guard", "~> 1.8.0"
-  gem "guard-bundler", "~> 1.0.0"
-  gem "guard-rspec", "~> 3.0.0"
-  gem "pry"
-  gem "pry-debugger"
-  gem "pry-remote"
-  gem "rb-inotify", require: false
-  gem "rb-fsevent", require: false
-  gem "thin"
-  gem "terminal-notifier-guard"
+  gem 'rspec-rails', '~> 2.0'
+  gem 'guard', '~> 1.8.0'
+  gem 'guard-bundler', '~> 1.0.0'
+  gem 'guard-rspec', '~> 3.0.0'
+  gem 'pry'
+  gem 'pry-debugger'
+  gem 'pry-remote'
+  gem 'rb-inotify', require: false
+  gem 'rb-fsevent', require: false
+  gem 'thin'
+  gem 'terminal-notifier-guard'
   gem 'shoulda-matchers'
   gem 'simplecov'
 end

@@ -1,7 +1,7 @@
 class Device < ActiveRecord::Base
 
   # Attributes
-  attr_accessible :uuid
+  attr_readonly :uuid
 
   # Associations
   belongs_to :user

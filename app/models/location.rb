@@ -1,4 +1,3 @@
 class Location < ActiveRecord::Base
-  belongs_to :locatable
-  attr_accessible :lonlat, :reported_at
+  belongs_to :locatable, polymorphic: true
 end
