@@ -4,10 +4,10 @@ Server::Application.routes.draw do
     scope 'devices/:device_uuid/' do
 
       # Current Items
-      resource :current_activity, only: [:show, :destroy] do
+      resource :current_activity, controller: :activities, only: [:create, :show, :destroy] do
         resources :locations, only: [:create]
       end
-      resource :current_help_request, only: [:create, :destroy, :show] do
+      resource :current_help_request, controller: :help_requests, only: [:create, :destroy, :show] do
         resources :locations, only: [:create]
       end
 

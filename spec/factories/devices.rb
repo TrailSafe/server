@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :device do
-    uuid "MyString"
-    user nil
+    uuid { SecureRandom.uuid }
+    user
   end
 end

@@ -2,6 +2,7 @@ class CreateDevices < ActiveRecord::Migration
   def change
     create_table :devices do |t|
       t.string :uuid
+      t.datetime :verified_on
       t.references :user
       t.timestamps
     end
