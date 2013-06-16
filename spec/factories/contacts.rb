@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :contact do
-    first_name "MyString"
-    last_name "MyString"
-    phone_number "MyString"
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    sequence(:phone_number) { |n| "(555) 555-#{1000 + n}" }
   end
 end
