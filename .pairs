@@ -1,0 +1,7 @@
+# .pairs - configuration for 'git pair'
+pairs:
+  jw: Jason Waldrip; jason
+  tc: Tom Chapin; tom
+email:
+  domain: trailsafeapp.com
+  no_solo_prefix: true
