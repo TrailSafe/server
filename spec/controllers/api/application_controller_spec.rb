@@ -12,7 +12,7 @@ describe Api::ApplicationController do
       response.should render_template :error
       JSON.parse(response.body)['error'].should be_present
     end
-    
+
   end
 
   context 'private methods' do
@@ -78,12 +78,8 @@ describe Api::ApplicationController do
 
       context 'given the user does not exist' do
 
-        it 'should be an instance of user' do
-          controller.send(:current_user).should be_a User
-        end
-
-        it 'should return a new user record' do
-          controller.send(:current_user).should be_a_new_record
+        it 'should be nil' do
+          controller.send(:current_user).should be_nil
         end
 
       end
