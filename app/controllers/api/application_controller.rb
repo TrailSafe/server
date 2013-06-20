@@ -17,7 +17,7 @@ class Api::ApplicationController < ::ApplicationController
   end
 
   def current_user
-    @current_user ||= current_device.user
+    @current_user ||= current_device.user || current_device.build_user
   end
 
   def record_not_found(error)
