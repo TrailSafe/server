@@ -108,5 +108,56 @@ describe Api::ApplicationController do
       end
     end
 
+    describe 'render_error' do
+      before :each do
+        described_class.send :public, :render_error
+        described_class.send :skip_before_filter, :verify_api_key!, :verify_device!, only: :render_error
+        routes.draw { get 'render_error' => 'api/application#render_error' }
+        get :render_error, format: :json
+      end
+
+      it 'should have a status of 400' do
+        response.status.should eq 400
+      end
+
+      it 'should render the error template' do
+        response.should render_template :error
+      end
+
+      it 'should assign @error_message' do
+        assigns(:error_message).should be_present
+      end
+    end
+
+    describe 'verify_api_key!' do
+      context 'when the api is not present' do
+        it 'should call render_error with a 401 status' do
+          controller.should_receive(:render_error).with(message: 'Invalid API key', status: 401)
+          controller.send(:verify_api_key!)
+        end
+      end
+
+      context 'when the api is invalid' do
+        it 'should call render_error with a 401 status' do
+          request.env['HTTP_AUTHORIZATION'] = SecureRandom.hex 64
+          controller.should_receive(:render_error).with(message: 'Invalid API key', status: 401)
+          controller.send(:verify_api_key!)
+        end
+      end
+
+      context 'when the api is valid' do
+        it 'should never call render_error' do
+          ENV['API_KEY'] = SecureRandom.hex 64
+          request.env['HTTP_AUTHORIZATION'] = ENV['API_KEY']
+          controller.should_not_receive(:render_error)
+          controller.send(:verify_api_key!)
+        end
+      end
+    end
+
+    describe 'verify_device!' do
+
+    end
+
   end
 end
