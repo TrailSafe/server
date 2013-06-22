@@ -12,6 +12,10 @@ class Api::ApplicationController < ::ApplicationController
 
   private
 
+  def authorization_header
+    request.headers['HTTP_AUTHORIZATION']
+  end
+
   def current_device
     @current_device ||= Device.find_or_create_by_uuid device_uuid_header
   end
@@ -20,8 +24,17 @@ class Api::ApplicationController < ::ApplicationController
     @current_user ||= current_device.user
   end
 
+  def device_uuid_header
+    request.headers['HTTP_DEVICE_ID']
+  end
+
   def record_not_found(error)
     render_error message: error.message, status: 404
+  end
+
+  def render_error(message: 'There was an error', status: 400)
+    @error_message = message
+    render :error, status: status
   end
 
   def verify_api_key!
@@ -35,19 +48,6 @@ class Api::ApplicationController < ::ApplicationController
       message = [:device, current_device.errors.full_messages.to_sentence.downcase].join(' ')
       render_error message: message
     end
-  end
-
-  def render_error(message: 'There was an error', status: 400)
-    @error_message = message
-    render :error, status: status
-  end
-
-  def authorization_header
-    request.headers['HTTP_AUTHORIZATION']
-  end
-
-  def device_uuid_header
-    request.headers['HTTP_DEVICE_ID']
   end
 
   helper_method :current_device

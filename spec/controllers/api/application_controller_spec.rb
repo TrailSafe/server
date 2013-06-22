@@ -16,7 +16,14 @@ describe Api::ApplicationController do
   end
 
   context 'private methods' do
-    
+
+    describe '#authorization_header' do
+      it 'should be set to the HTTP auth header' do
+        request.env['HTTP_AUTHORIZATION'] = SecureRandom.hex 64
+        controller.send(:authorization_header).should eq request.env['HTTP_AUTHORIZATION']
+      end
+    end
+
     describe '#current_device' do
 
       it 'should return an instance of device' do
@@ -85,6 +92,21 @@ describe Api::ApplicationController do
       end
 
     end
-    
+
+    describe '#device_uuid_header' do
+      it 'should be set to the HTTP device header' do
+        request.env['HTTP_DEVICE_ID'] = SecureRandom.uuid
+        controller.send(:device_uuid_header).should eq request.env['HTTP_DEVICE_ID']
+      end
+    end
+
+    describe 'record_not_found' do
+      it 'should call render_error with the correct status and message' do
+        exception_mock = mock.tap { |m| m.stub(:message).and_return('an error message') }
+        controller.should_receive(:render_error).with(message: exception_mock.message, status: 404)
+        controller.send(:record_not_found, exception_mock)
+      end
+    end
+
   end
 end
