@@ -156,7 +156,32 @@ describe Api::ApplicationController do
     end
 
     describe 'verify_device!' do
+      context 'when the current_device contains errors' do
+        before :each do
+          errors = ActiveModel::Errors.new mock
+          errors.add(:test, 'some error message')
+          device_stub = mock.tap { |m| m.stub(:errors).and_return(errors) }
+          device_stub.class.stub(:human_attribute_name).and_return('test')
+          controller.stub(:current_device).and_return(device_stub)
+        end
 
+        it "should call render error with errors" do
+          controller.should_receive(:render_error).with message: 'device test some error message'
+          controller.send(:verify_device!)
+        end
+      end
+
+      context 'when the current_device does not contain errors' do
+        before :each do
+          device_stub = mock.tap { |m| m.stub(:errors).and_return([]) }
+          controller.stub(:current_device).and_return(device_stub)
+        end
+
+        it "should never call render error with errors" do
+          controller.should_not_receive(:render_error).with message: 'device test some error message'
+          controller.send(:verify_device!)
+        end
+      end
     end
 
   end
