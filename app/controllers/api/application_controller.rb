@@ -33,8 +33,13 @@ class Api::ApplicationController < ::ApplicationController
   end
 
   def render_error(message: 'There was an error', status: 400)
-    @error_message = message
+    @message = message
     render :error, status: status
+  end
+
+  def render_message(message: nil, status: 200)
+    @message = message
+    render :message, status: status
   end
 
   def verify_api_key!
