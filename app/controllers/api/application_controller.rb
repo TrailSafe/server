@@ -45,8 +45,7 @@ class Api::ApplicationController < ::ApplicationController
 
   def verify_device!
     if current_device.errors.present?
-      message = [:device, current_device.errors.full_messages.to_sentence.downcase].join(' ')
-      render_error message: message
+      render_error message: current_device.errors_to_sentence
     end
   end
 
