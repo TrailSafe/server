@@ -1,4 +1,5 @@
 class User < Contact
+  include FormattedErrors
 
   has_secure_password
 

@@ -1,4 +1,5 @@
 class Device < ActiveRecord::Base
+  include FormattedErrors
 
   # Scopes
   scope :verified, ->{ where 'verified_on IS NOT NULL' }
