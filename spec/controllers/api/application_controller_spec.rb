@@ -71,7 +71,9 @@ describe Api::ApplicationController do
 
       context 'given the user exists' do
 
-        before { controller.send(:current_device).should_receive(:user).and_return(FactoryGirl.create :user) }
+        before :each do
+          controller.send(:current_device).should_receive(:user).and_return(FactoryGirl.create :user)
+        end
 
         it 'should be an instance of user' do
           controller.send(:current_user).should be_a User
@@ -158,22 +160,24 @@ describe Api::ApplicationController do
     describe 'verify_device!' do
       context 'when the current_device contains errors' do
         before :each do
-          errors = ActiveModel::Errors.new mock
-          errors.add(:test, 'some error message')
-          device_stub = mock.tap { |m| m.stub(:errors).and_return(errors) }
-          device_stub.class.stub(:human_attribute_name).and_return('test')
+          device_stub = mock.tap do |m|
+            m.stub(:errors_to_sentence).and_return "error"
+            m.stub(:errors).and_return(['error'])
+          end
           controller.stub(:current_device).and_return(device_stub)
         end
 
         it "should call render error with errors" do
-          controller.should_receive(:render_error).with message: 'device test some error message'
+          controller.should_receive(:render_error)
           controller.send(:verify_device!)
         end
       end
 
       context 'when the current_device does not contain errors' do
         before :each do
-          device_stub = mock.tap { |m| m.stub(:errors).and_return([]) }
+          device_stub = mock.tap do |m|
+            m.stub(:errors).and_return([])
+          end
           controller.stub(:current_device).and_return(device_stub)
         end
 
