@@ -1,6 +1,6 @@
 class Api::UsersController < Api::ApplicationController
 
-  before_filter :load_user, except: :create
+  before_filter :verify_current_user!, :load_user, except: :create
 
   def create
     @user = User.new user_params
@@ -33,7 +33,7 @@ class Api::UsersController < Api::ApplicationController
   private
 
   def load_user
-    render_error message: 'User does not exist', status: :not_found unless (@user = current_user)
+    @user = current_user
   end
 
   def user_params

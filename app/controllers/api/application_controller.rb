@@ -54,6 +54,12 @@ class Api::ApplicationController < ::ApplicationController
     end
   end
 
+  def verify_current_user!
+    unless current_user.present?
+      render_error message: 'User does not exist', status: :not_found
+    end
+  end
+
   helper_method :current_device
 
 end
