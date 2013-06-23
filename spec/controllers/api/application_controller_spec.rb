@@ -127,7 +127,20 @@ describe Api::ApplicationController do
       end
 
       it 'should assign @error_message' do
-        assigns(:error_message).should be_present
+        assigns(:message).should be_present
+      end
+    end
+
+    describe 'render_message' do
+      before :each do
+        described_class.send :public, :render_message
+        described_class.send :skip_before_filter, :verify_api_key!, :verify_device!, only: :render_message
+        routes.draw { get 'render_message' => 'api/application#render_message' }
+        get :render_message, format: :json
+      end
+
+      it 'should render the error template' do
+        response.should render_template :message
       end
     end
 
