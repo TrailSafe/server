@@ -15,18 +15,18 @@ class Api::UsersController < Api::ApplicationController
   end
 
   def update
-    if @user.save
+    if @user.update_attributes user_params
       render :show
     else
-      render_error @user.errors_to_sentence, :unprocessable_entity
+      render_error message: @user.errors_to_sentence, status: :unprocessable_entity
     end
   end
 
   def destroy
     if @user.destroy
-      render_message "Successfully deleted User #{@user.id}"
+      render_message message: "Successfully deleted User #{@user.id}"
     else
-      render_error "Unable to delete User #{@user.id}"
+      render_error message: "Unable to delete User #{@user.id}"
     end
   end
 

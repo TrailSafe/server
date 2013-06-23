@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Api::UsersController do
   include_context 'valid api controller'
 
+  let(:user){ FactoryGirl.create :user }
+
   describe 'POST #create' do
     let(:perform_request) do
       post :create, user: FactoryGirl.attributes_for(:user), subdomain: 'api', format: :json
@@ -27,16 +29,13 @@ describe Api::UsersController do
       get :show, subdomain: 'api', format: :json
     end
     context 'if the user exists' do
-      before :each do
-        controller.stub(:current_user) { FactoryGirl.create :user }
-      end
       it 'should be successful' do
         perform_request
         response.should be_a_success
       end
     end
 
-    context 'if the user does not exist' do
+    context 'if the user does not exist', valid_user: false do
       it 'should not be successful' do
         perform_request
         response.status.should_not < 400
@@ -64,15 +63,19 @@ describe Api::UsersController do
       end
       
       context 'if the model is invalid' do
-        
+        let(:perform_request) do
+          put :update, user: FactoryGirl.attributes_for(:user, phone_number: nil), subdomain: 'api', format: :json
+        end
         it 'should return with errors' do
-          pending
+          perform_request
+          response.status.should eq 422
+          response.should render_template :error
         end
         
       end
     end
 
-    context 'if the user does not exist' do
+    context 'if the user does not exist', valid_user: false do
       it 'should not be successful' do
         perform_request
         response.status.should_not < 400
@@ -87,10 +90,14 @@ describe Api::UsersController do
     end
 
     context 'if the user exists' do
-      pending
+
+      it 'should be successful' do
+        perform_request
+        response.should be_a_success
+      end
     end
 
-    context 'if the user does not exist' do
+    context 'if the user does not exist', valid_user: false do
       it 'should not be successful' do
         perform_request
         response.status.should_not < 400
