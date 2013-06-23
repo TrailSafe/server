@@ -49,6 +49,7 @@ gem 'bcrypt-ruby'
 group :development, :test do
   gem 'faker'
   gem 'coveralls'
+  gem 'database_cleaner'
   gem 'debugger'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
