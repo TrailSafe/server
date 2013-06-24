@@ -53,15 +53,14 @@ describe Api::UsersController do
 
     context 'if the user exists' do
       context 'if the model is valid' do
-        
         it 'should be successful' do
-          pending
+          perform_request
+          response.should be_a_success
         end
 
         it 'should update the user' do
-          pending
+          expect { perform_request }.to change { current_user.attributes }
         end
-        
       end
       
       context 'if the model is invalid' do
@@ -73,7 +72,6 @@ describe Api::UsersController do
           response.status.should eq 422
           response.should render_template :error
         end
-        
       end
     end
 
@@ -92,7 +90,6 @@ describe Api::UsersController do
     end
 
     context 'if the user exists' do
-
       it 'should be successful' do
         perform_request
         response.should be_a_success
@@ -106,6 +103,26 @@ describe Api::UsersController do
         response.should render_template :error
       end
     end
+  end
+
+  context 'private methods' do
+
+    describe '#load_user' do
+      it 'should set the user instance variable to the current_user' do
+        expect { controller.send(:load_user) }.to change {
+          controller.instance_variable_get(:@user)
+        }.to controller.send(:current_user)
+      end
+    end
+
+    describe '#user_params' do
+      it 'should return the user params' do
+        user_params = FactoryGirl.attributes_for(:user)
+        controller.params = { user: user_params }
+        controller.send(:user_params).to_hash.should include user_params.stringify_keys
+      end
+    end
+
   end
 
 end
