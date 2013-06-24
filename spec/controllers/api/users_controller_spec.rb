@@ -24,6 +24,17 @@ describe Api::UsersController do
     it 'should assign the device to the user' do
       expect { perform_request }.to change { controller.send(:current_device).reload.user }
     end
+
+    context 'if the model is invalid' do
+      let(:perform_request) do
+        post :create, user: FactoryGirl.attributes_for(:user, phone_number: nil), subdomain: 'api', format: :json
+      end
+      it 'should return with errors' do
+        perform_request
+        response.status.should eq 422
+        response.should render_template :error
+      end
+    end
   end
 
   describe 'GET #show' do
