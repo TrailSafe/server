@@ -1,7 +1,7 @@
 Server::Application.routes.draw do
   # Api Routes
   scope module: :api, constraints: { subdomain: 'api' }, as: :api, defaults: { format: :json } do
-    root to: 'application#info'
+    root to: 'devices#show'
     # Current Items
     resource :current_activity, controller: :activities, only: [:create, :show, :destroy] do
       resources :locations, only: [:create]
@@ -12,7 +12,7 @@ Server::Application.routes.draw do
 
     # User Resources
     resource :user do
-      resource :emergency_contact, controller: :contacts, only: [:create, :show, :update, :destroy]
+      resources :emergency_contacts, controller: :contacts, only: [:create, :show, :update, :destroy]
       resources :activities, only: [:create, :show, :update, :destroy, :index]
     end
     get '/*path' => 'application#invalid_url'
