@@ -7,7 +7,7 @@ class Api::UsersController < Api::ApplicationController
     if @user.save
       render :show
     else
-      render_error @user.errors_to_sentence, :unprocessable_entity
+      render_error message: @user.errors_to_sentence, status: :unprocessable_entity
     end
   end
 
