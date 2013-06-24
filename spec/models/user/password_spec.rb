@@ -1,5 +1,8 @@
 require 'spec_helper'
 
 describe User::Password do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'associations and validations' do
+    it { should belong_to :user }
+    it { should validate_presence_of :digest }
+  end
 end
