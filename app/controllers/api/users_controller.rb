@@ -37,7 +37,7 @@ class Api::UsersController < Api::ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :phone_number).merge device: current_device
+    params.require(:user).permit(:first_name, :last_name, :phone_number, :password, :password_confirmation).merge device: current_device
   end
 
 end
