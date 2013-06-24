@@ -1,5 +1,5 @@
 Server::Application.routes.draw do
-# Api Routes
+  # Api Routes
   scope module: :api, constraints: { subdomain: 'api' }, as: :api, defaults: { format: :json } do
     root to: 'application#info'
     # Current Items
@@ -18,7 +18,7 @@ Server::Application.routes.draw do
     get '/*path' => 'application#invalid_url'
   end
 
-# Short Url Routes
+  # Short Url Routes
   Server::Application.routes.draw do
     scope constraints: { domain: 'trl.io' }, as: :short do
       root to: 'application#redirect_to_www'
@@ -26,7 +26,7 @@ Server::Application.routes.draw do
     end
   end
 
-# Default Routes File
+  # Default Routes File
   root to: 'pages#home'
   get ':page' => 'pages#show'
   resources :help_requests

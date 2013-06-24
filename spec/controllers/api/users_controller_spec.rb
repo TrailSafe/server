@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Api::UsersController do
   include_context 'valid api controller'
 
+  before(:all){ Rails.application.reload_routes! }
+
   let(:user){ FactoryGirl.create :user }
 
   describe 'POST #create' do
@@ -105,6 +107,5 @@ describe Api::UsersController do
       end
     end
   end
-
 
 end
