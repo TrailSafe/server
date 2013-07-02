@@ -1,0 +1,40 @@
+HOST: http://api.trailsafeapp.com/
+
+--- API Version 1 ---
+---
+This is the trailsafe API.
+---
+
+--
+Device Root
+The following is what the device has access to at it's root.
+--
+Shows the resources available to the device and thier respective urls
+GET /
+> Content-Type: application/json
+> Device-ID: {device uuid}
+> Authorization: {api key}
+< 200
+< Content-Type: application/json
+{
+    "current_activity": "/current_activity",
+    "current_help_request": "/current_help_request",
+    "user": "/user"
+}
+
+
+Save new products in your shopping cart
+POST /shopping-cart
+> Content-Type: application/json
+{ "product":"1AB23ORM", "quantity": 2 }
+< 201
+< Content-Type: application/json
+{ "status": "created", "url": "/shopping-cart/2" }
+
+
+-- Payment Resources --
+This resource allows you to submit payment information to process your *shopping cart* items
+POST /payment
+{ "cc": "12345678900", "cvc": "123", "expiry": "0112" }
+< 200
+{ "receipt": "/payment/receipt/1" }
