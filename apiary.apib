@@ -8,80 +8,30 @@ Following the [Responses](https://github.com/apiaryio/api-blueprint/blob/master/
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/6.%20Requests.md)
 + [Next: Headers](https://github.com/apiaryio/api-blueprint/blob/master/examples/7.%20Headers.md)
 
-# Group Ones
+# Group Device
 
-## My Super Awesome Message [/message]
+## Root [/]
 
 ### Retrieve Message [GET]
 
++ Request (application/json)
+    + Headers
+        + Authorization: {api-key}
+        + Device-ID: {device-uuid}
+        
+
 + Response 200 (application/json)
 
-  This is the *"all good"* response. Returned when everything went well. It bears our **message** to the world.
-
-    + Headers
-
-            X-My-Header: 42
-            X-My-Another-Header: This is it.
+  This is a **proper response** when the device uuid and api key are valid.
 
     + Body
 
             { "message" : "Hello World!" }
 
-    + Schema
++ Response 401 (text/plain)
 
-            {
-              "$schema": "http://json-schema.org/draft-03/schema",
-              "id": "http://jsonschema.net",
-              "required": false,
-              "type": "object",
-              "properties": {
-                "message": {
-                  "id": "http://jsonschema.net/message",
-                  "required": false,
-                  "type": "string"
-                }
-              }
-            }
-
-+ Response 404 (text/plain)
-
-  This is the **infamous 404**. Our message was not found.
+  This is the **unauthorized respone**. The api key was invalid.
 
     + Body
 
-            Not Found.
-        
-### Create Message [POST]
-In API Blueprint requests can hold exactly the same kind of information and can be described by exactly the same structure as responses, only with different signature. 
-
-+ Request Create Message (application/json)
-  
-  This is our first request named `Create Message`.
-
-    + Headers
-
-            X-My-Request-Header: 42
-    
-    + Body
-        
-            { "message" : "A message to be posted." }
-
-    + Schema
-
-            { ... }
-
-+ Request Duplicate Message (application/json)
-  
-  This is our second request named `Duplicate Message`.
-    
-    + Body
-        
-            { "url" : "http://messageoftheday.org" }
-
-    + Schema
-
-            { ... }            
-        
-+ Response 201 (text/plain)
-        
-        Created.
+            { "error" : "Invalid API key" }
