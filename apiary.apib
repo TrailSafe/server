@@ -1,43 +1,87 @@
-HOST: http://api.trailsafeapp.com/
+FORMAT: X-1A
 
---- API Version 1 ---
----
-This is the trailsafe API.
----
+# Requests API
+Following the [Responses](https://github.com/apiaryio/api-blueprint/blob/master/examples/5.%20Responses.md) example, this API will show you how to define multiple requests and what data these requests can bear. Let's demonstrate multiple request on the `POST` method of our resource.
 
---
-Device Root
-The following is what the device has access to at it's root.
---
-Shows the resources available to the device and thier respective urls
-GET /
-> Content-Type: application/json
-> Device-ID: {device uuid}
-> Authorization: {api key}
-< 200
-< Content-Type: application/json
-{
-    "current_activity": "/current_activity",
-    "current_help_request": "/current_help_request",
-    "user": "/user"
-}
+## API Blueprint Tutorial
++ [Previous: Responses](https://github.com/apiaryio/api-blueprint/blob/master/examples/5.%20Responses.md)
++ [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/6.%20Requests.md)
++ [Next: Headers](https://github.com/apiaryio/api-blueprint/blob/master/examples/7.%20Headers.md)
 
--- User --
-Create the User for this device
-POST /user
-> Content-Type: application/json
-> Device-ID: {device uuid}
-> Authorization: {api key}
-{ "user": {
-    "first_name":   "Bob",
-    "last_name":    "Yetiman",
-    "phone_number": "(555) 555-1234"
-  }
-}
-< 201
-{ "user": {
-    "first_name":   "Bob",
-    "last_name":    "Yetiman",
-    "phone_number": "(555) 555-1234"
-  }
-}
+# Group One
+
+## My Super Awesome Message [/message]
+
+### Retrieve Message [GET]
+
++ Response 200 (application/json)
+
+  This is the *"all good"* response. Returned when everything went well. It bears our **message** to the world.
+
+    + Headers
+
+            X-My-Header: 42
+            X-My-Another-Header: This is it.
+
+    + Body
+
+            { "message" : "Hello World!" }
+
+    + Schema
+
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "id": "http://jsonschema.net",
+              "required": false,
+              "type": "object",
+              "properties": {
+                "message": {
+                  "id": "http://jsonschema.net/message",
+                  "required": false,
+                  "type": "string"
+                }
+              }
+            }
+
++ Response 404 (text/plain)
+
+  This is the **infamous 404**. Our message was not found.
+
+    + Body
+
+            Not Found.
+        
+### Create Message [POST]
+In API Blueprint requests can hold exactly the same kind of information and can be described by exactly the same structure as responses, only with different signature. 
+
++ Request Create Message (application/json)
+  
+  This is our first request named `Create Message`.
+
+    + Headers
+
+            X-My-Request-Header: 42
+    
+    + Body
+        
+            { "message" : "A message to be posted." }
+
+    + Schema
+
+            { ... }
+
++ Request Duplicate Message (application/json)
+  
+  This is our second request named `Duplicate Message`.
+    
+    + Body
+        
+            { "url" : "http://messageoftheday.org" }
+
+    + Schema
+
+            { ... }            
+        
++ Response 201 (text/plain)
+        
+        Created.
