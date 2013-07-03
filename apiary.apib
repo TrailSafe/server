@@ -8,24 +8,23 @@ FORMAT: X-1A
 
 ### Retrieve Message [GET]
 
-+ Request Root (application/json)
-    + Headers
-        + Authorization: {api-key}
-        + Device-ID: {device-uuid}
+    + Request Root (application/json)
+        + Headers
+            + Authorization: {api-key}
+            + Device-ID: {device-uuid}
         
+    + Response 200 (application/json)
+    
+        This is a **proper response** when the device uuid and api key are valid.
 
-+ Response 200 (application/json)
-
-  This is a **proper response** when the device uuid and api key are valid.
-
-    + Body
+        + Body
 
             { "message" : "Hello World!" }
 
-+ Response 401 (text/plain)
+    + Response 401 (text/plain)
 
-  This is the **unauthorized respone**. The api key was invalid.
+        This is the **unauthorized respone**. The api key was invalid.
 
-    + Body
+        + Body
 
             { "error" : "Invalid API key" }
