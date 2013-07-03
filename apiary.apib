@@ -8,12 +8,12 @@ Following the [Responses](https://github.com/apiaryio/api-blueprint/blob/master/
 + [This: Raw API Blueprint](https://raw.github.com/apiaryio/api-blueprint/master/examples/6.%20Requests.md)
 + [Next: Headers](https://github.com/apiaryio/api-blueprint/blob/master/examples/7.%20Headers.md)
 
-# Group One
+# Group Device
 
-## My Super Awesome Message [/message]
+## Root [/]
         
-### Create Message [POST]
-In API Blueprint requests can hold exactly the same kind of information and can be described by exactly the same structure as responses, only with different signature. 
+### Device Root [GET]
+The Device root holds all the information for a device.
 
 + Request Create Message (application/json)
   
@@ -29,19 +29,7 @@ In API Blueprint requests can hold exactly the same kind of information and can 
 
     + Schema
 
-            { ... }
-
-+ Request Duplicate Message (application/json)
-  
-  This is our second request named `Duplicate Message`.
-    
-    + Body
-        
-            { "url" : "http://messageoftheday.org" }
-
-    + Schema
-
-            { ... }            
+            { ... }    
         
 + Response 201 (text/plain)
         
