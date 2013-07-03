@@ -1,6 +1,7 @@
 FORMAT: X-1A
 
 # Trailsafe API
+This is the TS API
 
 # Group Device
 
@@ -9,7 +10,9 @@ FORMAT: X-1A
 ### Retrieve Message [GET]
 
     + Request Root (application/json)
+        
         + Headers
+        
             + Authorization: {api-key}
             + Device-ID: {device-uuid}
         
@@ -21,7 +24,7 @@ FORMAT: X-1A
 
             { "message" : "Hello World!" }
 
-    + Response 401 (text/plain)
+    + Response 401 (application/json)
 
         This is the **unauthorized respone**. The api key was invalid.
 
